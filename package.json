@@ -1,0 +1,33 @@
+{
+  "devDependencies": {
+    "nodemon": "^2.0.20"
+  },
+  "dependencies": {
+    "dotenv": "^16.0.3",
+    "express": "^4.18.2",
+    "mysql2": "^2.3.3"
+  },
+  "name": "employee-database",
+  "description": "represent Employee personal information",
+  "version": "1.0.0",
+  "main": "app.js",
+  "scripts": {
+    "dev": "nodemon app.js",
+    "start": " node app.js",
+    "test": "jest"
+  },
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/paullaster/Employee-database.git"
+  },
+  "keywords": [
+    "SQL",
+    "NODEJS"
+  ],
+  "author": "elvine Achieng",
+  "license": "ISC",
+  "bugs": {
+    "url": "https://github.com/paullaster/Employee-database/issues"
+  },
+  "homepage": "https://github.com/paullaster/Employee-database#readme"
+}
