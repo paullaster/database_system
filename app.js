@@ -42,9 +42,9 @@ db.connect ( (err) => {
 //ENDPOINTS:
 
 //CREATE DATABASE IF NOT EXISTS:
-app.post ( '/createdatabase', (req, res) => {
-    const sqlQuery = `CREATE DATABASE ${req.body.database}`;
-    db.query (sqlQuery, (err, rows) => {
+app.post ( '/create-database', (req, res) => {
+    const dbCreationQuery = `CREATE DATABASE ${req.body.database}`;
+    db.query (dbCreationQuery, (err, rows) => {
         if (err) {
             res
             .status(500)
@@ -54,16 +54,48 @@ app.post ( '/createdatabase', (req, res) => {
             });
             return;
         };
+        process.env.DB_NAME = req.body.database;
         res
         .status(200)
         .json ( {
             status: 'success',
+            temp: process.env.DB_NAME,
             message: `${req.body.database} was successfully created`,
             data: rows ,
         });
     });
 });
 
+//CREATE TABLE IF NOT EXISTS:
+app.post('/create-table', ( req, res) => {
+    const tableCreationQuery = `
+    CREATE TABLE ${req.body.dbTable}(
+        id int AUTO_INCREMENT,
+        first_name VARCHAR(26),
+        last_name VARCHAR(26),
+        designation VARCHAR(255),
+        DEPTH VARCHAR(6),
+        PRIMARY KEY (id))`;
+    db.query(tableCreationQuery, (err, rows) => {
+        if (err) {
+            res
+            .status(500)
+            .json ( {
+                status: 'error',
+                error: err.message,
+            });
+            return;
+        };
+        res
+        .status (200)
+        .json ( {
+            status: 'success',
+            temp: process.env.DB_NAME,
+            message: `${req.body.dbTable} was successfully created`,
+            data: rows,
+        });
+    });
+});
 //LAUNCH SERVER:
 app.listen (process.env.PORT, () => {
     console.log(`APP LISTENING ON PORT ${process.env.PORT}`);
