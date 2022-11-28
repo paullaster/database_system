@@ -77,38 +77,36 @@ app.post('/create-table', ( req, res) => {
             });
             return;
         };
-       const filterred = rows.filter ( (row) => {
+       const dbToBeModified = rows.filter ( (row) => {
          return req.body.database === row.Database;
        });
-       res.json(filterred);
+       const tableCreationQuery = `
+    CREATE TABLE ${dbToBeModified[0].Database}.${req.body.dbTable}(
+        id int AUTO_INCREMENT,
+        first_name VARCHAR(26),
+        last_name VARCHAR(26),
+        designation VARCHAR(255),
+        DEPTH VARCHAR(6),
+        PRIMARY KEY (id))`;
+    db.query(tableCreationQuery, (err, rows) => {
+        if (err) {
+            res
+            .status(500)
+            .json ( {
+                status: 'error',
+                error: err.message,
+            });
+            return;
+        };
+        res
+        .status (200)
+        .json ( {
+            status: 'success',
+            message: `${req.body.dbTable} was successfully created in ${dbToBeModified[0].Database} dababase`,
+            data: rows,
+        });
     });
-    // const tableCreationQuery = `
-    // CREATE TABLE ${req.body.dbTable}(
-    //     id int AUTO_INCREMENT,
-    //     first_name VARCHAR(26),
-    //     last_name VARCHAR(26),
-    //     designation VARCHAR(255),
-    //     DEPTH VARCHAR(6),
-    //     PRIMARY KEY (id))`;
-    // db.query(tableCreationQuery, (err, rows) => {
-    //     if (err) {
-    //         res
-    //         .status(500)
-    //         .json ( {
-    //             status: 'error',
-    //             error: err.message,
-    //         });
-    //         return;
-    //     };
-    //     res
-    //     .status (200)
-    //     .json ( {
-    //         status: 'success',
-    //         temp: listAllDB,
-    //         message: `${req.body.dbTable} was successfully created`,
-    //         data: rows,
-    //     });
-    // });
+    });
 });
 //LAUNCH SERVER:
 app.listen (process.env.PORT, () => {
