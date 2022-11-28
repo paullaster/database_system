@@ -425,7 +425,6 @@ app.get ( '/find/db/table/one/data', (req, res) => {
                     .status (500)
                     .json ( {
                         status: 'success',
-                        message: 'Data successfully saved to the database!',
                         data: rows,
                     } );
                 }
@@ -437,7 +436,7 @@ app.get ( '/find/db/table/one/data', (req, res) => {
 
 //FINDING SPECIFIC DATA:
 // FETCHING DATA FROM DATABASE:
-app.get ( '/find/db/table/one/data', (req, res) => {
+app.get ( '/find/db/table/one/data/where', (req, res) => {
     if(!(req.body.database)) {
         res
         .status (404)
@@ -476,7 +475,8 @@ app.get ( '/find/db/table/one/data', (req, res) => {
                 };
             });
             for ( let prop in tableToBeModified[0] ) {
-                db.query ( ` SELECT * FROM ${dbToBeModified[0].Database}.${tableToBeModified[0][prop]}`, ( err, rows) => {
+                db.query ( ` SELECT * FROM ${dbToBeModified[0].Database}.${tableToBeModified[0][prop]}
+                WHERE id = ${req.body.field.id}`, ( err, rows) => {
                     if ( err) {
                         res
                         .status ( 500)
@@ -490,7 +490,6 @@ app.get ( '/find/db/table/one/data', (req, res) => {
                     .status (500)
                     .json ( {
                         status: 'success',
-                        message: 'Data successfully saved to the database!',
                         data: rows,
                     } );
                 }
