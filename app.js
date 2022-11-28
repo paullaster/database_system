@@ -410,12 +410,27 @@ app.get ( '/find/db/table/one/data', (req, res) => {
                     return row[prop] === req.body.dbTable;
                 };
             });
-            res
-            .status ( 200)
-            .json ( {
-                status: 'success',
-                data: tableToBeModified,
-            });    
+            for ( let prop in tableToBeModified[0] ) {
+                db.query ( ` SELECT * FROM ${dbToBeModified[0].Database}.${tableToBeModified[0][prop]}`, ( err, rows) => {
+                    if ( err) {
+                        res
+                        .status ( 500)
+                        .json ( {
+                            status: 'error',
+                            error: err.message,
+                        });
+                        return;
+                    };
+                    res
+                    .status (500)
+                    .json ( {
+                        status: 'success',
+                        message: 'Data successfully saved to the database!',
+                        data: rows,
+                    } );
+                }
+                );
+            };  
         });
     });        
 });
