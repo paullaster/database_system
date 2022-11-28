@@ -540,8 +540,8 @@ app.put ( '/update-todb', ( req, res) => {
                 };
             });
             for ( let prop in tableToBeModified[0] ) {
-                db.query ( ` SELECT * FROM ${dbToBeModified[0].Database}.${tableToBeModified[0][prop]}
-                WHERE id = ${req.body.field.id}`, ( err, rows) => {
+                db.query ( ` UPDATE ${dbToBeModified[0].Database}.${tableToBeModified[0][prop]}
+                SET name=${req.body.field.name} WHERE id = ${req.body.field.id}`, ( err, rows) => {
                     if ( err) {
                         res
                         .status ( 500)
