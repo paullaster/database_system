@@ -161,7 +161,8 @@ app.post ( '/insert-todb/one', ( req, res) => {
 
 //INSERTING MANY RECORDS INTO TABLE:
 app.post ( '/insert-todb/many', ( req, res) => {
-
+    const multipleDataToInsert = {...req.body.multipleData};
+    res.json(multipleDataToInsert)
 });
 
 
