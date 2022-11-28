@@ -289,6 +289,36 @@ app.get ( '/find/db/table/all', (req, res) => {
         });
         return;
     };
+    db.query ( 'SHOW DATABASES', ( err, rows) => {
+        if ( err) {
+            res
+            .status ( 500 )
+            .json ( {
+                status: 'error',
+                error: err.message,
+            });
+            return;
+        };
+        const dbToBeModified = rows.filter ( (row) => {
+            return row.Database === req.body.database;
+        } );
+        db.query ( ` SHOW TABLES FROM ${dbToBeModified[0].Database}`, ( err, rows) => {
+            if ( err) {
+                res
+                .status ( 500)
+                .json ( {
+                    status: 'error',
+                    error: err.message,
+                });
+                return;
+            };
+            const tableToBeModified = rows.filter ( (row) => {
+                for ( let prop in row ) {
+                    return row[prop] === req.body.dbTable;
+                };
+            } );
+        });
+    });        
 });
 
 //UPDATE TABLE:
