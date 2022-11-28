@@ -220,9 +220,9 @@ app.post ( '/insert-todb/many', ( req, res) => {
 
 
 //READ DATA FROM TABLE:
-app.get ( '/read-fromdb/', ( req, res) => {
+app.get ( '/find/db/one', ( req, res) => {
     
-    //Find Available databases
+    //Find a single database:
     if(!(req.body.database)) {
         res
         .status (404)
@@ -232,7 +232,24 @@ app.get ( '/read-fromdb/', ( req, res) => {
         });
         return;
     };
-    db.query ( ' SHOW DATABASE')
+    db.query ( ' SHOW DATABASES', (err, rows)  => {
+        if ( err) {
+            res
+            .status (404)
+            .json ( {
+                status: 'error',
+                error: err.message,
+            });
+            return;
+        };
+        res
+        .status (200)
+        .json ( {
+            status: 'success',
+            message: 'Database was successfully fetched',
+            data: rows,
+        } );
+    });
 });
 
 //UPDATE TABLE:
