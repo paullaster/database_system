@@ -103,8 +103,39 @@ app.post('/create-table', ( req, res) => {
     });
 });
 
-//INSERTING INTO TABLE:
-app.post ( '/insert-todb', ( req, res) => {
+//INSERTING SINGLE RECORD INTO TABLE:
+app.post ( '/insert-todb/one', ( req, res) => {
+    let dataToInsert = {...req.body.data};
+    db.query ( 'SHOW DATABASES', (err, rows) => {
+        if (err) {
+            res
+            .status (500)
+            .json ( { 
+                status: 'error',
+                error: err.message,
+            });
+            return;
+        };
+        const dbToBeModified = rows.filter ( (row) => {
+            return req.body.database === row.Database;
+        });
+        db.query (`${dbToBeModified}.SHOW TABLES`, (err, rows) => {
+            if (err) {
+                res
+                .status (500)
+                .json ( {
+                    status: 'error',
+                    error: err.message,
+                });
+                return;
+            };
+        } );
+    });
+    res.json (dataToInsert);
+});
+
+//INSERTING MANY RECORDS INTO TABLE:
+app.post ( '/insert-todb/many', ( req, res) => {
 
 });
 
