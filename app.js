@@ -223,7 +223,23 @@ app.post ( '/insert-todb/many', ( req, res) => {
 
 //FIND ALL DATABASES AVAILABLE:
 app.get ( '/find/db/all', (req, res) => {
-    db.query ( 'SHOW DATABASES', (err, rows) => {});
+    db.query ( 'SHOW DATABASES', (err, rows) => {
+        if ( err ) {
+            res
+            .status (404)
+            .json ( {
+                status: 'error',
+                error: err.message,
+            });
+            return;
+        };
+        res
+        .status (200)
+        .json ( {
+            status: 'success',
+            data: rows,
+        });
+    });
 });
 
 
