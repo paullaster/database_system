@@ -422,7 +422,7 @@ app.get ( '/find/db/table/one/data', (req, res) => {
                         return;
                     };
                     res
-                    .status (500)
+                    .status (200)
                     .json ( {
                         status: 'success',
                         data: rows,
@@ -487,7 +487,7 @@ app.get ( '/find/db/table/one/data/where', (req, res) => {
                         return;
                     };
                     res
-                    .status (500)
+                    .status (200)
                     .json ( {
                         status: 'success',
                         data: rows,
