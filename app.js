@@ -278,6 +278,18 @@ app.get ( '/find/db/one', ( req, res) => {
     });
 });
 
+// FIND ALL TABLES IN A DATABASE:
+app.get ( '/find/db/table/all', (req, res) => {
+    if(!(req.body.database)) {
+        res
+        .status (404)
+        .json ( {
+            status: 'error',
+            error: 'Please enter a database name',
+        });
+        return;
+    };
+});
 
 //UPDATE TABLE:
 app.put ( '/update-todb', ( req, res) => {});
