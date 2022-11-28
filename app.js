@@ -130,7 +130,9 @@ app.post ( '/insert-todb/one', ( req, res) => {
                 return;
             };
             const tableToBeModified = rows.filter ( (row) => {
-                return `${row.Tables_in_}${dbToBeModified[0].Database}` === req.body.dbTable;
+                for ( let prop  in row) {
+                    return row[prop] === req.body.dbTable;
+                };
             } );
             res.json( tableToBeModified);
         } );
