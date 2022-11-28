@@ -220,6 +220,14 @@ app.post ( '/insert-todb/many', ( req, res) => {
 
 
 //READ DATA FROM TABLE:
+
+//FIND ALL DATABASES AVAILABLE:
+app.get ( '/find/db/all', (req, res) => {
+    db.query ( 'SHOW DATABASES', (err, rows) => {});
+});
+
+
+//FIND A SINGLE DATABASE:
 app.get ( '/find/db/one', ( req, res) => {
     
     //Find a single database:
@@ -245,9 +253,15 @@ app.get ( '/find/db/one', ( req, res) => {
         const targetDb = rows.filter ( (db) => {
             return db.Database === req.body.database;
         });
-        res.json ( targetDb );
+        res
+        .status (200)
+        .json ( {
+            status: 'success',
+            data: targetDb,
+        } );
     });
 });
+
 
 //UPDATE TABLE:
 app.put ( '/update-todb', ( req, res) => {});
