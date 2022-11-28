@@ -135,7 +135,7 @@ app.post ( '/insert-todb/one', ( req, res) => {
                 };
             } );
             for ( let prop in tableToBeModified[0] ) {
-                db.query ( `INSERT INTO ${tableToBeModified[0][prop]} SET?`, 
+                db.query ( `INSERT INTO ${dbToBeModified[0].Database}.${tableToBeModified[0][prop]} SET?`, 
                     dataToInsert, (err, result) => {
                         if ( err ) {
                             res
