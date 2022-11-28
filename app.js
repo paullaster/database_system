@@ -81,13 +81,7 @@ app.post('/create-table', ( req, res) => {
          return req.body.database === row.Database;
        });
        const tableCreationQuery = `
-    CREATE TABLE ${dbToBeModified[0].Database}.${req.body.dbTable}(
-        id int AUTO_INCREMENT,
-        first_name VARCHAR(26),
-        last_name VARCHAR(26),
-        designation VARCHAR(255),
-        DEPTH VARCHAR(6),
-        PRIMARY KEY (id))`;
+    CREATE TABLE ${dbToBeModified[0].Database}.${req.body.dbTable}(${req.body.fields})`;
     db.query(tableCreationQuery, (err, rows) => {
         if (err) {
             res
