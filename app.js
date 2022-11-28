@@ -108,6 +108,23 @@ app.post('/create-table', ( req, res) => {
     });
     });
 });
+
+//INSERTING INTO TABLE:
+app.post ( '/insert-todb', ( req, res) => {
+
+});
+
+
+//READ DATA FROM TABLE:
+app.get ( '/read-fromdb', ( req, res) => {});
+
+//UPDATE TABLE:
+app.put ( '/update-todb', ( req, res) => {});
+
+//DELETE FROM TABLE
+app.post ( '/delete-fromdb', ( req, res) => {});
+
+
 //LAUNCH SERVER:
 app.listen (process.env.PORT, () => {
     console.log(`APP LISTENING ON PORT ${process.env.PORT}`);
