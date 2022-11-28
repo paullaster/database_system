@@ -220,7 +220,20 @@ app.post ( '/insert-todb/many', ( req, res) => {
 
 
 //READ DATA FROM TABLE:
-app.get ( '/read-fromdb', ( req, res) => {});
+app.get ( '/read-fromdb/', ( req, res) => {
+    
+    //Find Available databases
+    if(!(req.body.database)) {
+        res
+        .status (404)
+        .json ( {
+            status: 'error',
+            error: 'Please enter a database name',
+        });
+        return;
+    };
+    db.query ( ' SHOW DATABASE')
+});
 
 //UPDATE TABLE:
 app.put ( '/update-todb', ( req, res) => {});
