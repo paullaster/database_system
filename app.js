@@ -59,7 +59,6 @@ app.post ( '/create-database', (req, res) => {
         .status(200)
         .json ( {
             status: 'success',
-            temp: process.env.DB_NAME,
             message: `${req.body.database} was successfully created`,
             data: rows ,
         });
@@ -68,33 +67,48 @@ app.post ( '/create-database', (req, res) => {
 
 //CREATE TABLE IF NOT EXISTS:
 app.post('/create-table', ( req, res) => {
-    const tableCreationQuery = `
-    CREATE TABLE ${req.body.dbTable}(
-        id int AUTO_INCREMENT,
-        first_name VARCHAR(26),
-        last_name VARCHAR(26),
-        designation VARCHAR(255),
-        DEPTH VARCHAR(6),
-        PRIMARY KEY (id))`;
-    db.query(tableCreationQuery, (err, rows) => {
+    db.query ("SHOW DATABASES", (err, rows) => {
         if (err) {
             res
-            .status(500)
+            .status (500)
             .json ( {
                 status: 'error',
                 error: err.message,
             });
             return;
         };
-        res
-        .status (200)
-        .json ( {
-            status: 'success',
-            temp: process.env.DB_NAME,
-            message: `${req.body.dbTable} was successfully created`,
-            data: rows,
-        });
+       const filterred = rows.filter ( (row) => {
+         return req.body.database === row.Database;
+       });
+       res.json(filterred);
     });
+    // const tableCreationQuery = `
+    // CREATE TABLE ${req.body.dbTable}(
+    //     id int AUTO_INCREMENT,
+    //     first_name VARCHAR(26),
+    //     last_name VARCHAR(26),
+    //     designation VARCHAR(255),
+    //     DEPTH VARCHAR(6),
+    //     PRIMARY KEY (id))`;
+    // db.query(tableCreationQuery, (err, rows) => {
+    //     if (err) {
+    //         res
+    //         .status(500)
+    //         .json ( {
+    //             status: 'error',
+    //             error: err.message,
+    //         });
+    //         return;
+    //     };
+    //     res
+    //     .status (200)
+    //     .json ( {
+    //         status: 'success',
+    //         temp: listAllDB,
+    //         message: `${req.body.dbTable} was successfully created`,
+    //         data: rows,
+    //     });
+    // });
 });
 //LAUNCH SERVER:
 app.listen (process.env.PORT, () => {
