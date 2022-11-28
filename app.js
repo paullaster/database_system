@@ -242,13 +242,10 @@ app.get ( '/find/db/one', ( req, res) => {
             });
             return;
         };
-        res
-        .status (200)
-        .json ( {
-            status: 'success',
-            message: 'Database was successfully fetched',
-            data: rows,
-        } );
+        const targetDb = rows.filter ( (db) => {
+            return db.Database === req.body.database;
+        });
+        res.json ( targetDb );
     });
 });
 
