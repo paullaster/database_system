@@ -501,7 +501,7 @@ app.get ( '/find/db/table/one/data/where', (req, res) => {
 
 
 //UPDATE TABLE:
-app.put ( '/update-todb', ( req, res) => {
+app.put ( '/update', ( req, res) => {
     if(!(req.body.database)) {
         res
         .status (404)
@@ -540,8 +540,7 @@ app.put ( '/update-todb', ( req, res) => {
                 };
             });
             for ( let prop in tableToBeModified[0] ) {
-                db.query ( ` UPDATE ${dbToBeModified[0].Database}.${tableToBeModified[0][prop]}
-                SET name=${req.body.field.name} WHERE id = ${req.body.field.id}`, ( err, rows) => {
+                db.query ( ` UPDATE ${dbToBeModified[0].Database}.${tableToBeModified[0][prop]} SET name = '${req.body.field.name}' WHERE id = ${req.body.field.id}`, ( err, rows) => {
                     if ( err) {
                         res
                         .status ( 500)
