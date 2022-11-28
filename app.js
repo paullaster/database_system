@@ -215,7 +215,7 @@ app.post ( '/insert-todb/many', ( req, res) => {
                 };
             });
         });
-    };   
+    };
 });
 
 
