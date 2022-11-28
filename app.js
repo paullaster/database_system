@@ -435,6 +435,71 @@ app.get ( '/find/db/table/one/data', (req, res) => {
     });        
 });
 
+//FINDING SPECIFIC DATA:
+// FETCHING DATA FROM DATABASE:
+app.get ( '/find/db/table/one/data', (req, res) => {
+    if(!(req.body.database)) {
+        res
+        .status (404)
+        .json ( {
+            status: 'error',
+            error: 'Please enter a database name',
+        });
+        return;
+    };
+    db.query ( 'SHOW DATABASES', ( err, rows) => {
+        if ( err) {
+            res
+            .status ( 500 )
+            .json ( {
+                status: 'error',
+                error: err.message,
+            });
+            return;
+        };
+        const dbToBeModified = rows.filter ( (row) => {
+            return row.Database === req.body.database;
+        } );
+        db.query ( ` SHOW TABLES FROM ${dbToBeModified[0].Database}`, ( err, rows) => {
+            if ( err) {
+                res
+                .status ( 500)
+                .json ( {
+                    status: 'error',
+                    error: err.message,
+                });
+                return;
+            };
+            const tableToBeModified = rows.filter ( (row) => {
+                for ( let prop in row ) {
+                    return row[prop] === req.body.dbTable;
+                };
+            });
+            for ( let prop in tableToBeModified[0] ) {
+                db.query ( ` SELECT * FROM ${dbToBeModified[0].Database}.${tableToBeModified[0][prop]}`, ( err, rows) => {
+                    if ( err) {
+                        res
+                        .status ( 500)
+                        .json ( {
+                            status: 'error',
+                            error: err.message,
+                        });
+                        return;
+                    };
+                    res
+                    .status (500)
+                    .json ( {
+                        status: 'success',
+                        message: 'Data successfully saved to the database!',
+                        data: rows,
+                    } );
+                }
+                );
+            };  
+        });
+    });        
+});
+
 
 //UPDATE TABLE:
 app.put ( '/update-todb', ( req, res) => {});
