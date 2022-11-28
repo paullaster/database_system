@@ -134,7 +134,27 @@ app.post ( '/insert-todb/one', ( req, res) => {
                     return row[prop] === req.body.dbTable;
                 };
             } );
-            res.json( tableToBeModified);
+            for ( let prop in tableToBeModified[0] ) {
+                db.query ( `INSERT INTO ${tableToBeModified[0][prop]} SET?`, 
+                    dataToInsert, (err, result) => {
+                        if ( err ) {
+                            res
+                            .status (500)
+                            .json ( {
+                                status: 'error',
+                                error: err.message,
+                            });
+                            return;
+                        };
+                        res
+                        .status (200)
+                        .json ( {
+                            status: 'success',
+                            data: result
+                        });
+                    }
+                );
+            };
         } );
     });
 });
