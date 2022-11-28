@@ -119,19 +119,22 @@ app.post ( '/insert-todb/one', ( req, res) => {
         const dbToBeModified = rows.filter ( (row) => {
             return req.body.database === row.Database;
         });
-        db.query (`${dbToBeModified}.SHOW TABLES`, (err, rows) => {
+        db.query (`SHOW TABLES FROM ${dbToBeModified[0].Database};`, (err, rows) => {
             if (err) {
                 res
                 .status (500)
                 .json ( {
                     status: 'error',
-                    error: err.message,
+                    error: err,
                 });
                 return;
             };
+            const tableToBeModified = rows.filter ( (row) => {
+                return `${row.Tables_in_}${dbToBeModified[0].Database}` === req.body.dbTable;
+            } );
+            res.json( tableToBeModified);
         } );
     });
-    res.json (dataToInsert);
 });
 
 //INSERTING MANY RECORDS INTO TABLE:
